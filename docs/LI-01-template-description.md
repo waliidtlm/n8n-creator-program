@@ -1,4 +1,4 @@
-# Route inbound leads to HubSpot with contact reuse and duplicate protection
+# Route inbound leads to HubSpot
 
 ## Creator Hub listing description
 

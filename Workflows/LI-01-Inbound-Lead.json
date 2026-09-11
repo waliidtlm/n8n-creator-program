@@ -1,5 +1,5 @@
 {
-  "name": "Route inbound leads to HubSpot with contact reuse and duplicate protection",
+  "name": "Route inbound leads to HubSpot",
   "nodes": [
     {
       "parameters": {},
