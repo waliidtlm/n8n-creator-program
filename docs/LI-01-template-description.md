@@ -86,7 +86,7 @@ Configure `source_event_key` as unique in HubSpot. The workflow generates values
 
 ## Setup
 
-1. Import `Workflows/LI-01-Inbound-Lead.json` into n8n.
+1. Import `Workflows/LI01-02/LI-01-Inbound-Lead.json` into n8n.
 2. Open **Configure HubSpot**.
 3. Replace `YOUR_PIPELINE_ID`, `YOUR_DEAL_STAGE_ID` and `YOUR_OWNER_ID`.
 4. Keep `hubspot_event_key_property` as `source_event_key`, or set the exact internal name of your equivalent unique Deal property.

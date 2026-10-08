@@ -42,7 +42,7 @@ LI-02 uses these exact property names. It does not create properties or assign o
 
 ## Setup
 
-1. Import `Workflows/LI-02-Lead-SLA-Monitor.json` into n8n.
+1. Import `Workflows/LI01-02/LI-02-Lead-SLA-Monitor.json` into n8n.
 2. Confirm the required properties and prepare fictional test Deals in a controlled HubSpot environment.
 3. Connect the same HubSpot credential to all five HTTP Request nodes: Deal search, email search, call search, meeting search, and Deal update.
 4. Keep the workflow inactive and **Every 5 Minutes (Disabled Until Publish)** disabled.
