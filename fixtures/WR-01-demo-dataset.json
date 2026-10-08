@@ -1,0 +1,81 @@
+{
+  "client": {
+    "id": "demo_client",
+    "name": "Example Agency",
+    "recipient_email": "client@example.com",
+    "reviewer_email": "reviewer@example.com",
+    "timezone": "UTC",
+    "currency": "USD"
+  },
+  "reporting_period": {
+    "start": "2026-09-28",
+    "end": "2026-10-04"
+  },
+  "comparison_period": {
+    "start": "2026-09-21",
+    "end": "2026-09-27"
+  },
+  "metrics": {
+    "current": {
+      "spend": 120,
+      "conversions": 12,
+      "clicks": 120,
+      "conversion_rate": 0.1,
+      "cost_per_conversion": 10
+    },
+    "previous": {
+      "spend": 100,
+      "conversions": 10,
+      "clicks": 100,
+      "conversion_rate": 0.1,
+      "cost_per_conversion": 10
+    }
+  },
+  "context": {
+    "completed_work": [
+      "Reviewed campaign targeting."
+    ],
+    "blockers": [
+      "Awaiting landing page approval."
+    ],
+    "client_requests": [
+      "Approve the landing page draft."
+    ],
+    "next_actions": [
+      "Review search terms."
+    ],
+    "internal_notes": ""
+  },
+  "lookup": {
+    "context_found": true,
+    "current_ads_found": true,
+    "previous_ads_found": true
+  },
+  "meta": {
+    "report_key": "demo_client:2026-09-28:2026-10-04",
+    "data_as_of": "2026-10-05T09:00:00Z",
+    "execution_id": "demo"
+  },
+  "period_valid": true,
+  "test_mode": true,
+  "ads_rows": {
+    "current": {
+      "client_id": "demo_client",
+      "source": "sheet",
+      "spend": 120,
+      "conversions": 12,
+      "clicks": 120,
+      "conversion_rate": 0.1,
+      "cost_per_conversion": 10
+    },
+    "previous": {
+      "client_id": "demo_client",
+      "source": "sheet",
+      "spend": 100,
+      "conversions": 10,
+      "clicks": 100,
+      "conversion_rate": 0.1,
+      "cost_per_conversion": 10
+    }
+  }
+}

@@ -1,0 +1,267 @@
+{
+  "name": "Log weekly report failures and notify an operator",
+  "description": "Reusable production error handler for the weekly report workflow. Normalizes failures, appends an audit row to Error Logs, and sends a Gmail alert without allowing either notification branch to crash the handler.",
+  "nodes": [
+    {
+      "id": "24f0478f-53f5-4381-9c6a-a3fd7496c458",
+      "name": "Workflow Error Trigger",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        396
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "2e985a23-902c-4385-b9b6-dd76ed102dfa",
+      "name": "Normalize Error Event",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        396
+      ],
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "language": "javaScript",
+        "jsCode": "const payload = $json ?? {};\nconst execution = payload.execution ?? {};\nconst workflow = payload.workflow ?? {};\nconst error = execution.error ?? payload.error ?? {};\nconst asText = (value, fallback = '') => {\n  if (value === null || value === undefined || value === '') return fallback;\n  if (typeof value === 'string') return value;\n  try { return JSON.stringify(value); } catch { return String(value); }\n};\nreturn { json: {\n  handled_at: new Date().toISOString(),\n  workflow_id: asText(workflow.id),\n  workflow_name: asText(workflow.name, 'Unknown workflow'),\n  execution_id: asText(execution.id),\n  execution_url: asText(execution.url),\n  mode: asText(execution.mode ?? payload.mode, 'unknown'),\n  last_node: asText(execution.lastNodeExecuted, 'unknown'),\n  error_message: asText(error.message ?? error, 'Unknown workflow error').slice(0, 5000),\n  trigger: asText(payload.trigger, 'error_workflow'),\n  handler_status: 'RECEIVED'\n} };"
+      }
+    },
+    {
+      "id": "dad861bc-374c-4de5-b59a-442954b2422d",
+      "name": "Append Error Log",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        448,
+        300
+      ],
+      "parameters": {
+        "resource": "sheet",
+        "operation": "append",
+        "authentication": "oAuth2",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "YOUR_SPREADSHEET_ID"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "Error Logs"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "handled_at": "={{ $json.handled_at }}",
+            "workflow_id": "={{ $json.workflow_id }}",
+            "workflow_name": "={{ $json.workflow_name }}",
+            "execution_id": "={{ $json.execution_id }}",
+            "execution_url": "={{ $json.execution_url }}",
+            "mode": "={{ $json.mode }}",
+            "last_node": "={{ $json.last_node }}",
+            "error_message": "={{ $json.error_message }}",
+            "trigger": "={{ $json.trigger }}",
+            "handler_status": "={{ $json.handler_status }}"
+          },
+          "schema": [
+            {
+              "id": "handled_at",
+              "displayName": "handled_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "workflow_id",
+              "displayName": "workflow_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "workflow_name",
+              "displayName": "workflow_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "execution_id",
+              "displayName": "execution_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "execution_url",
+              "displayName": "execution_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "mode",
+              "displayName": "mode",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "last_node",
+              "displayName": "last_node",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "error_message",
+              "displayName": "error_message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "trigger",
+              "displayName": "trigger",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "handler_status",
+              "displayName": "handler_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {
+          "cellFormat": "RAW",
+          "locationDefine": {
+            "values": {
+              "headerRow": 1
+            }
+          },
+          "handlingExtraData": "ignoreIt",
+          "useAppend": true
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "d8922a8e-5f27-4760-b184-d609297ff614",
+      "name": "Send Admin Error Alert",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        448,
+        492
+      ],
+      "parameters": {
+        "resource": "message",
+        "operation": "send",
+        "authentication": "oAuth2",
+        "sendTo": "operator@example.com",
+        "subject": "=[n8n ERROR] {{ $json.workflow_name }} — execution {{ $json.execution_id }}",
+        "emailType": "text",
+        "message": "=Workflow: {{ $json.workflow_name }} ({{ $json.workflow_id }})\nExecution: {{ $json.execution_id }}\nMode: {{ $json.mode }}\nLast node: {{ $json.last_node }}\nError: {{ $json.error_message }}\nExecution URL: {{ $json.execution_url }}\nHandled at: {{ $json.handled_at }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "a2224061-5e38-4860-b51b-7b53ac18be2f",
+      "name": "Error Handler Overview",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -40,
+        -550
+      ],
+      "parameters": {
+        "content": "## Log weekly report failures\n\nThis optional companion captures execution failures for the reporting template. It normalizes diagnostic fields, appends an Error Logs row and attempts an operator email. These side effects use separate outgoing connections and continue when the other fails.\n\n### How it works\nSelect this workflow in the main workflow settings after importing both files. A failed live execution supplies the workflow name, execution ID and failure details. Sheets keeps the audit record; Gmail alerts the operator. DATA_ERROR report rows are business validation outcomes and do not trigger this handler automatically.\n\n### Setup\nReplace YOUR_SPREADSHEET_ID, create Error Logs using the documented headers, choose a controlled operator mailbox and bind your own Sheets/Gmail credentials. Test with a synthetic failure before client use. Keep lead and client data out of public exports.\n\nThis export includes no credential IDs or private installation references. The original reporting project remains separately preserved.",
+        "width": 800,
+        "height": 600,
+        "color": 5
+      }
+    },
+    {
+      "id": "18a66bd7-6b88-46c9-a901-75febd840d7d",
+      "name": "Error Logging Setup",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        -180
+      ],
+      "parameters": {
+        "content": "## Logging and alerts\nUse the same spreadsheet and exact Error Logs headers. RAW cell format prevents formula interpretation. Replace operator@example.com. Review error messages for personal data and configure execution retention.",
+        "width": 900,
+        "height": 180,
+        "color": 7
+      }
+    }
+  ],
+  "connections": {
+    "Workflow Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Normalize Error Event",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Error Event": {
+      "main": [
+        [
+          {
+            "node": "Append Error Log",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send Admin Error Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {}
+}
