@@ -1,5 +1,5 @@
 {
-  "name": "Log weekly report failures and notify an operator",
+  "name": "Log report workflow errors in Google Sheets and send Gmail alerts",
   "description": "Reusable production error handler for the weekly report workflow. Normalizes failures, appends an audit row to Error Logs, and sends a Gmail alert without allowing either notification branch to crash the handler.",
   "nodes": [
     {
@@ -207,7 +207,7 @@
         -550
       ],
       "parameters": {
-        "content": "## Log weekly report failures\n\nThis optional companion captures execution failures for the reporting template. It normalizes diagnostic fields, appends an Error Logs row and attempts an operator email. These side effects use separate outgoing connections and continue when the other fails.\n\n### How it works\nSelect this workflow in the main workflow settings after importing both files. A failed live execution supplies the workflow name, execution ID and failure details. Sheets keeps the audit record; Gmail alerts the operator. DATA_ERROR report rows are business validation outcomes and do not trigger this handler automatically.\n\n### Setup\nReplace YOUR_SPREADSHEET_ID, create Error Logs using the documented headers, choose a controlled operator mailbox and bind your own Sheets/Gmail credentials. Test with a synthetic failure before client use. Keep lead and client data out of public exports.\n\nThis export includes no credential IDs or private installation references. The original reporting project remains separately preserved.",
+        "content": "## Log report workflow errors in Google Sheets and send Gmail alerts\n\nThis optional companion captures execution failures for the reporting template. It normalizes diagnostic fields, appends an Error Logs row and attempts an operator email. These side effects use separate outgoing connections and continue when the other fails.\n\n### How it works\nSelect this workflow in the main workflow settings after importing both files. A failed live execution supplies the workflow name, execution ID and failure details. Sheets keeps the audit record; Gmail alerts the operator. DATA_ERROR report rows are business validation outcomes and do not trigger this handler automatically.\n\n### Setup\nReplace YOUR_SPREADSHEET_ID, create Error Logs using the documented headers, choose a controlled operator mailbox and bind your own Sheets/Gmail credentials. Test with a synthetic failure before client use. Keep lead and client data out of public exports.\n\nThis export includes no credential IDs or private installation references. The original reporting project remains separately preserved.",
         "width": 800,
         "height": 600,
         "color": 5

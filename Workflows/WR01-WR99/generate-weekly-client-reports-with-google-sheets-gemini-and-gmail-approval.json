@@ -1,5 +1,5 @@
 {
-  "name": "Draft weekly client reports with human approval",
+  "name": "Generate weekly client reports with Google Sheets, Gemini and Gmail approval",
   "description": "Sequential 10-client weekly reporting with deterministic periods, Sheet-backed mock Ads data, idempotency, AI fact validation, human approval, safe test mode, and isolated client errors.",
   "nodes": [
     {
@@ -1738,7 +1738,7 @@
         -550
       ],
       "parameters": {
-        "content": "## Draft weekly client reports with human approval\n\nFor agencies and consultants who prepare recurring client updates from spreadsheet performance data and work notes. This template compares completed reporting periods, calculates verified KPI changes, and asks Gemini for a short narrative without numbers. Code builds the numeric table and escapes report content. A reviewer sees the complete outgoing email before Gmail can deliver it.\n\n### How it works\nRun the built-in fictional demo, or read active clients and matching period rows from Google Sheets. Validate data, calculate changes, draft a summary, preview the report, request approval, record SENDING, send once, then save the Gmail message ID and final status.\n\n### Setup\nStart with Try Demo: default demo mode uses no credentials, APIs or spreadsheet writes. For live mode, create the documented tabs, configure spreadsheet_id and sender_name, bind Sheets/Gemini/Gmail credentials, and select the optional error workflow. Test with a controlled mailbox before disabling demo mode.\n\nThe schedule is disabled and the export inactive. Data comes from Ads Data rows, not a direct advertising API. Live approval is sequential; interrupted PENDING_APPROVAL or SENDING rows require operator review.",
+        "content": "## Generate weekly client reports with Google Sheets, Gemini and Gmail approval\n\nFor agencies and consultants who prepare recurring client updates from spreadsheet performance data and work notes. This template compares completed reporting periods, calculates verified KPI changes, and asks Gemini for a short narrative without numbers. Code builds the numeric table and escapes report content. A reviewer sees the complete outgoing email before Gmail can deliver it.\n\n### How it works\nRun the built-in fictional demo, or read active clients and matching period rows from Google Sheets. Validate data, calculate changes, draft a summary, preview the report, request approval, record SENDING, send once, then save the Gmail message ID and final status.\n\n### Setup\nStart with Try Demo: default demo mode uses no credentials, APIs or spreadsheet writes. For live mode, create the documented tabs, configure spreadsheet_id and sender_name, bind Sheets/Gemini/Gmail credentials, and select the optional error workflow. Test with a controlled mailbox before disabling demo mode.\n\nThe schedule is disabled and the export inactive. Data comes from Ads Data rows, not a direct advertising API. Live approval is sequential; interrupted PENDING_APPROVAL or SENDING rows require operator review.",
         "width": 900,
         "height": 600,
         "color": 5

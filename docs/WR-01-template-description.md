@@ -1,4 +1,4 @@
-# Draft weekly client reports with human approval
+# Generate weekly client reports with Google Sheets, Gemini and Gmail approval
 
 ## Creator Hub listing description
 
@@ -18,8 +18,8 @@ Run Try Demo first. Create the documented spreadsheet tabs, configure the spread
 
 ## Files
 
-- Workflows/WR01-WR99/WR-01-Weekly-Client-Report.json: the third use-case template.
-- Workflows/WR01-WR99/WR-99-Report-Error-Handler.json: optional companion for execution failures; not a fourth business use case.
+- Workflows/WR01-WR99/generate-weekly-client-reports-with-google-sheets-gemini-and-gmail-approval.json: the third use-case template.
+- Workflows/WR01-WR99/log-report-workflow-errors-in-google-sheets-and-send-gmail-alerts.json: optional companion for execution failures; not a fourth business use case.
 - fixtures/WR-01-demo-dataset.json: fictional dataset also embedded in the demo node.
 - [Spreadsheet setup](WR-01-spreadsheet-setup.md).
 - [Acceptance checklist](WR-01-submission-checklist.md).

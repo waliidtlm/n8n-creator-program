@@ -1,8 +1,8 @@
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 const read = file => JSON.parse(fs.readFileSync(new URL('../' + file, import.meta.url), 'utf8'));
-const main = read('Workflows/WR01-WR99/WR-01-Weekly-Client-Report.json');
-const handler = read('Workflows/WR01-WR99/WR-99-Report-Error-Handler.json');
+const main = read('Workflows/WR01-WR99/generate-weekly-client-reports-with-google-sheets-gemini-and-gmail-approval.json');
+const handler = read('Workflows/WR01-WR99/log-report-workflow-errors-in-google-sheets-and-send-gmail-alerts.json');
 const dataset = read('fixtures/WR-01-demo-dataset.json');
 const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
 const node = name => { const result = main.nodes.find(n => n.name === name); assert.ok(result, name); return result; };
